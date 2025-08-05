@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 void main() {
   runApp(const CryptoCurrenciesListApp());
@@ -14,6 +15,30 @@ class CryptoCurrenciesListApp extends StatelessWidget {
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white70,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.lime),
+        dividerColor: Colors.black12,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color.fromARGB(255, 146, 238, 116),
+          foregroundColor: Colors.black87,
+          elevation: 0,
+          titleTextStyle: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Color.fromARGB(221, 29, 29, 29),
+          ),
+        ),
+        listTileTheme: const ListTileThemeData(
+          iconColor: Colors.black54,
+          textColor: Colors.black87,
+          contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        ),
+        textTheme: const TextTheme(
+          bodyMedium: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
+          labelSmall: TextStyle(color: Colors.black12, fontSize: 16),
+        ),
       ),
       home: const MyHomePage(title: 'Crypto App'),
     );
@@ -29,78 +54,26 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  void _decrementCounter() {
-    setState(() {
-      _counter--;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+      appBar: AppBar(title: Text(widget.title)),
+      body: ListView.separated(
+        separatorBuilder: (context, index) =>
+            Divider(color: theme.dividerColor, height: 1),
+        itemBuilder: (context, i) => ListTile(
+          title: Text('Item $i', style: theme.textTheme.bodyMedium),
+          subtitle: Text('\$20000', style: theme.textTheme.labelSmall),
+          leading: SvgPicture.asset(
+            'assets/svg/bitcoin_logo.svg',
+            width: 25,
+            height: 25,
+          ),
+          trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 16),
         ),
-      ),
-      floatingActionButton: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          FloatingActionButton(
-            heroTag: 'btn1', // Must be unique
-            onPressed: () {
-              _incrementCounter();
-            },
-            child: Icon(Icons.add),
-          ),
-          SizedBox(height: 10, width: 50), // spacing
-          FloatingActionButton(
-            heroTag: 'btn2',
-            onPressed: () {
-              _decrementCounter();
-            },
-            child: Icon(Icons.remove),
-          ),
-        ],
+        itemCount: 10,
       ),
     );
   }
