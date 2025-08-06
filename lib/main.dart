@@ -1,5 +1,5 @@
+import 'package:crypto_app/features/crypto_list/crypto_list.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 void main() {
   runApp(const CryptoCurrenciesListApp());
@@ -44,48 +44,6 @@ class CryptoCurrenciesListApp extends StatelessWidget {
         '/': (context) => const CryptoListScreen(title: 'Crypto App'),
         '/crypto-coin': (context) => const CryptoCoinScreen(),
       },
-    );
-  }
-}
-
-class CryptoListScreen extends StatefulWidget {
-  const CryptoListScreen({super.key, required this.title});
-  final String title;
-
-  @override
-  State<CryptoListScreen> createState() => _CryptoListScreenState();
-}
-
-class _CryptoListScreenState extends State<CryptoListScreen> {
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Scaffold(
-      appBar: AppBar(title: Text(widget.title)),
-      body: ListView.separated(
-        separatorBuilder: (context, index) =>
-            Divider(color: theme.dividerColor, height: 1),
-        itemBuilder: (context, i) {
-          final coinName = 'Item $i';
-          return ListTile(
-            title: Text(coinName, style: theme.textTheme.bodyMedium),
-            subtitle: Text('\$20000', style: theme.textTheme.labelSmall),
-            leading: SvgPicture.asset(
-              'assets/svg/bitcoin_logo.svg',
-              width: 25,
-              height: 25,
-            ),
-            trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 16),
-            onTap: () => {
-              Navigator.of(
-                context,
-              ).pushNamed('/crypto-coin', arguments: coinName),
-            },
-          );
-        },
-        itemCount: 10,
-      ),
     );
   }
 }
