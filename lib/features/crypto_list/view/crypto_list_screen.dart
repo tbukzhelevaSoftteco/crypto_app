@@ -20,15 +20,17 @@ class _CryptoListScreenState extends State<CryptoListScreen> {
 
     return Scaffold(
       appBar: AppBar(title: Text(widget.title)),
-      body: ListView.separated(
-        separatorBuilder: (context, index) =>
-            Divider(color: theme.dividerColor, height: 1),
-        itemBuilder: (context, i) {
-          final coinName = 'Item $i';
-          return CryptoCoinTile(coinName: coinName);
-        },
-        itemCount: 10,
-      ),
+      body: (_cryptoCoinsList == null)
+          ? const SizedBox()
+          : ListView.separated(
+              separatorBuilder: (context, index) =>
+                  Divider(color: theme.dividerColor, height: 1),
+              itemBuilder: (context, i) {
+                final coin = _cryptoCoinsList![i];
+                return CryptoCoinTile(coin: coin);
+              },
+              itemCount: _cryptoCoinsList!.length,
+            ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.download),
         onPressed: () async {
