@@ -13,6 +13,11 @@ class CryptoListScreen extends StatefulWidget {
 
 class _CryptoListScreenState extends State<CryptoListScreen> {
   List<CryptoCoin>? _cryptoCoinsList;
+  @override
+  void initState() {
+    _loadCryptoCoins();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +26,7 @@ class _CryptoListScreenState extends State<CryptoListScreen> {
     return Scaffold(
       appBar: AppBar(title: Text(widget.title)),
       body: (_cryptoCoinsList == null)
-          ? const SizedBox()
+          ? Center(child: const CircularProgressIndicator())
           : ListView.separated(
               separatorBuilder: (context, index) =>
                   Divider(color: theme.dividerColor, height: 1),
@@ -29,15 +34,14 @@ class _CryptoListScreenState extends State<CryptoListScreen> {
                 final coin = _cryptoCoinsList![i];
                 return CryptoCoinTile(coin: coin);
               },
+              padding: EdgeInsets.only(top: 10),
               itemCount: _cryptoCoinsList!.length,
             ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.download),
-        onPressed: () async {
-          _cryptoCoinsList = await CryptoCoinsRepository().getCoinsList();
-          setState(() {});
-        },
-      ),
     );
+  }
+
+  Future<void> _loadCryptoCoins() async {
+    _cryptoCoinsList = await CryptoCoinsRepository().getCoinsList();
+    setState(() {});
   }
 }

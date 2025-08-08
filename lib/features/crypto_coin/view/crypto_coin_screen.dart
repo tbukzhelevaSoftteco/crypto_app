@@ -1,3 +1,4 @@
+import 'package:crypto_app/models/crypto_coin.dart';
 import 'package:flutter/material.dart';
 
 class CryptoCoinScreen extends StatefulWidget {
@@ -20,14 +21,15 @@ class _CryptoCoinScreenState extends State<CryptoCoinScreen> {
       'Expected a non-null argument for coin name, but got null',
     );
     assert(
-      args is String,
-      'Expected a String argument for coin name, but got $args',
+      args is CryptoCoin,
+      'Expected a CryptoCoin argument for coin name, but got $args',
     );
 
-    coinName = args as String?;
-    print("Coin name: $coinName");
+    coinName = (args as CryptoCoin).name;
+    debugPrint("Coin name: $coinName");
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(coinName ?? 'Crypto Coin Details')),

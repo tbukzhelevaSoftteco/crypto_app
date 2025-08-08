@@ -25,6 +25,6 @@ final darkTheme = ThemeData(
       fontWeight: FontWeight.bold,
       fontSize: 20,
     ),
-    labelSmall: TextStyle(color: Colors.black12, fontSize: 16),
+    labelSmall: TextStyle(color: Colors.black, fontSize: 16),
   ),
 );
