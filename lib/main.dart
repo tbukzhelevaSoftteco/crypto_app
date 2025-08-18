@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
 void main() {
-  GetIt.I.registerLazySingleton<AbstractCoinsRepository>(
-    () => CryptoCoinsRepository(dio: Dio()),
+  GetIt.I.registerLazySingleton<CryptoCoinsRepository>(
+    () => CryptoCoinsRepository(dio: Dio()), // твоя реализация
   );
   runApp(const CryptoCurrenciesListApp());
 }
