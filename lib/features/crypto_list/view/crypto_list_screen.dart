@@ -19,7 +19,7 @@ class _CryptoListScreenState extends State<CryptoListScreen> {
 
   @override
   void initState() {
-    _cryptoListBloc.add(LoadCryptoList());
+    _cryptoListBloc.add(LoadCryptoList(completer: null));
     super.initState();
   }
 
@@ -67,7 +67,7 @@ class _CryptoListScreenState extends State<CryptoListScreen> {
                     SizedBox(height: 20),
                     OutlinedButton(
                       onPressed: () {
-                        _cryptoListBloc.add(LoadCryptoList());
+                        _cryptoListBloc.add(LoadCryptoList(completer: null));
                       },
                       child: Text("Retry"),
                     ),
