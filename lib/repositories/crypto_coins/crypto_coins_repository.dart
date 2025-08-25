@@ -42,7 +42,9 @@ class CryptoCoinsRepository implements AbstractCoinsRepository {
     final price = usdData['PRICE'];
     final imgURL = usdData['IMAGEURL'];
     final toSymbol = usdData['TOSYMBOL'];
-    final lastUpdate = DateTime.tryParse(usdData['LASTUPDATE']);
+    final lastUpdate = DateTime.fromMillisecondsSinceEpoch(
+      usdData['LASTUPDATE'] * 1000,
+    );
     final high24Hours = usdData['HIGH24HOUR'];
     final low24Hours = usdData['LOW24HOUR'];
 

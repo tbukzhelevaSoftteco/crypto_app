@@ -9,21 +9,24 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
 class CryptoCoinScreen extends StatefulWidget {
-  const CryptoCoinScreen({super.key});
+  final CryptoCoin coin;
+
+  const CryptoCoinScreen({super.key, required this.coin});
 
   @override
   State<CryptoCoinScreen> createState() => _CryptoCoinScreenState();
 }
 
 class _CryptoCoinScreenState extends State<CryptoCoinScreen> {
-  String? coinName;
   final _cryptoDetailsBloc = CryptoCoinDetailsBloc(
     GetIt.I<CryptoCoinsRepository>(),
   );
 
   @override
   void initState() {
-    _cryptoDetailsBloc.add(LoadCryptoCoinDetails(currencyCode: coinName ?? ''));
+    _cryptoDetailsBloc.add(
+      LoadCryptoCoinDetails(currencyCode: widget.coin.name),
+    );
     super.initState();
   }
 
@@ -41,21 +44,22 @@ class _CryptoCoinScreenState extends State<CryptoCoinScreen> {
       'Expected a CryptoCoin argument for coin name, but got $args',
     );
 
-    coinName = (args as CryptoCoin).name;
+    final coinName = widget.coin.name;
     debugPrint("Coin name: $coinName");
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(coinName ?? 'Crypto Coin Details')),
+      appBar: AppBar(title: Text(widget.coin.name ?? 'Crypto Coin Details')),
       body: RefreshIndicator(
         child: BlocBuilder<CryptoCoinDetailsBloc, CryptoCoinDetailsState>(
           bloc: _cryptoDetailsBloc,
           builder: (context, state) {
             if (state is CryptoCoinDetailsLoading) {
               return Center(child: CircularProgressIndicator());
-            } else if (state is CryptoCoinDetailsLoaded) {
+            }
+            if (state is CryptoCoinDetailsLoaded) {
               final coinDetails = state.coinDetails;
               return ListView(
                 children: [
@@ -65,7 +69,8 @@ class _CryptoCoinScreenState extends State<CryptoCoinScreen> {
                   Text('Last Update: ${coinDetails?.lastUpdate ?? ''}'),
                 ],
               );
-            } else if (state is CryptoCoinDetailsLoadingFailure) {
+            }
+            if (state is CryptoCoinDetailsLoadingFailure) {
               return Center(child: Text('Failed to load coin details'));
             }
             return Container();
@@ -75,7 +80,7 @@ class _CryptoCoinScreenState extends State<CryptoCoinScreen> {
         onRefresh: () async {
           final completer = Completer();
           _cryptoDetailsBloc.add(
-            LoadCryptoCoinDetails(currencyCode: coinName ?? ''),
+            LoadCryptoCoinDetails(currencyCode: widget.coin.name),
           );
           return completer.future;
         },
