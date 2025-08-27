@@ -28,7 +28,7 @@ class _CryptoListScreenState extends State<CryptoListScreen> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: Text('Crypto app list')),
+      appBar: AppBar(title: const Text('Crypto app list')),
       body: RefreshIndicator(
         onRefresh: () async {
           final completer = Completer();
@@ -46,7 +46,7 @@ class _CryptoListScreenState extends State<CryptoListScreen> {
                   final coin = state.coinsList[i];
                   return CryptoCoinTile(coin: coin);
                 },
-                padding: EdgeInsets.only(top: 10),
+                padding: const EdgeInsets.only(top: 10),
                 itemCount: state.coinsList.length,
               );
             }
@@ -64,12 +64,12 @@ class _CryptoListScreenState extends State<CryptoListScreen> {
                       "Please try again later",
                       style: theme.textTheme.headlineMedium,
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     OutlinedButton(
                       onPressed: () {
                         _cryptoListBloc.add(LoadCryptoList(completer: null));
                       },
-                      child: Text("Retry"),
+                      child: const Text("Retry"),
                     ),
                   ],
                 ),

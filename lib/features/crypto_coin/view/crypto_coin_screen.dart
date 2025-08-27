@@ -51,27 +51,28 @@ class _CryptoCoinScreenState extends State<CryptoCoinScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.coin.name ?? 'Crypto Coin Details')),
+      appBar: AppBar(title: Text(widget.coin.name)),
       body: RefreshIndicator(
         child: BlocBuilder<CryptoCoinDetailsBloc, CryptoCoinDetailsState>(
           bloc: _cryptoDetailsBloc,
           builder: (context, state) {
             if (state is CryptoCoinDetailsLoading) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             }
             if (state is CryptoCoinDetailsLoaded) {
-              final coinDetails = state.coinDetails;
+              final coin = state.coin;
+              final coinDetails = state.coin?.details;
               return ListView(
                 children: [
-                  Image.network(coinDetails?.imageUrl ?? ''),
-                  Text('Name: ${coinDetails?.name ?? ''}'),
+                  Image.network(coinDetails?.fullImageUrl ?? ''),
+                  Text('Name: ${coin?.name ?? ''}'),
                   Text('Price: ${coinDetails?.priceInUSD ?? ''}'),
                   Text('Last Update: ${coinDetails?.lastUpdate ?? ''}'),
                 ],
               );
             }
             if (state is CryptoCoinDetailsLoadingFailure) {
-              return Center(child: Text('Failed to load coin details'));
+              return const Center(child: Text('Failed to load coin details'));
             }
             return Container();
           },
