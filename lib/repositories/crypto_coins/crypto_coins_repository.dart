@@ -20,8 +20,12 @@ class CryptoCoinsRepository implements AbstractCoinsRepository {
       };
       await cryptoCoinBox.putAll(cryptoCoinsMap);
     } catch (e) {
-      return cryptoCoinBox.values.toList();
+      cryptoCoinsList = cryptoCoinBox.values.toList();
     }
+    cryptoCoinsList.sort(
+      (a, b) =>
+          (b.details?.priceInUSD ?? 0).compareTo((a.details?.priceInUSD ?? 0)),
+    );
     return cryptoCoinsList;
   }
 
