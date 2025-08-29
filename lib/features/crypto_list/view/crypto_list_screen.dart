@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:auto_route/auto_route.dart';
 import 'package:crypto_app/features/crypto_list/bloc/crypto_list_bloc.dart';
 import 'package:crypto_app/features/crypto_list/widgets/widgets.dart';
+import 'package:crypto_app/generated/l10n.dart';
 import 'package:crypto_app/repositories/crypto_coins/crypto_coins.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,6 +29,7 @@ class _CryptoListScreenState extends State<CryptoListScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    const int count = 10;
 
     return Scaffold(
       appBar: AppBar(title: const Text('Crypto app list')),
@@ -41,15 +43,55 @@ class _CryptoListScreenState extends State<CryptoListScreen> {
           bloc: _cryptoListBloc,
           builder: (context, state) {
             if (state is CryptoListLoaded) {
-              return ListView.separated(
-                separatorBuilder: (context, index) =>
-                    Divider(color: theme.dividerColor, height: 1),
-                itemBuilder: (context, i) {
-                  final coin = state.coinsList[i];
-                  return CryptoCoinTile(coin: coin);
-                },
-                padding: const EdgeInsets.only(top: 10),
-                itemCount: state.coinsList.length,
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      S.of(context).hello,
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        color: theme.colorScheme.primary,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      S.of(context).goodMorning,
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        color: theme.colorScheme.primary,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      S.of(context).count(count),
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: theme.colorScheme.primary,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: ListView.separated(
+                      separatorBuilder: (context, index) =>
+                          Divider(color: theme.dividerColor, height: 1),
+                      itemBuilder: (context, i) {
+                        final coin = state.coinsList[i];
+                        return CryptoCoinTile(coin: coin);
+                      },
+                      padding: const EdgeInsets.only(top: 10),
+                      itemCount: state.coinsList.length,
+                    ),
+                  ),
+                ],
               );
             }
             if (state is CryptoListLoadingFailure) {
